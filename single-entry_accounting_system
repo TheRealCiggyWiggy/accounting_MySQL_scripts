@@ -1,0 +1,61 @@
+CREATE TABLE `account_types` (
+  `account_type_id` INT AUTO_INCREMENT,
+  `account_types` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`account_type_id`),
+  KEY `KEY` (`account_types`)
+);
+
+CREATE TABLE `banks` (
+  `bank_id` INT AUTO_INCREMENT,
+  `bank_name` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`bank_id`),
+  KEY `KEY` (`bank_name`)
+);
+
+CREATE TABLE `accounts` (
+  `account_id` INT AUTO_INCREMENT,
+  `bank_id` INT NOT NULL,
+  `account_type_id` INT NOT NULL,
+  `account_number` VARCHAR(34) NOT NULL,
+  `account_name` VARCHAR(15),
+  PRIMARY KEY (`account_id`),
+  FOREIGN KEY (`bank_id`)
+      REFERENCES `banks`(`bank_id`),
+  FOREIGN KEY (`account_type_id`)
+      REFERENCES `account_types`(`account_type_id`),
+  KEY `KEY` (`account_number`, `account_name`)
+);
+
+CREATE TABLE `categories` (
+  `category_id` INT AUTO_INCREMENT,
+  `category_name` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`category_id`),
+  KEY `KEY` (`category_name`)
+);
+
+CREATE TABLE `transactions` (
+  `transaction_id` INT AUTO_INCREMENT,
+  `account_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
+  `transaction_date` DATE NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `amount` DECIMAL(12,2) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transaction_id`),
+  FOREIGN KEY (`account_id`)
+      REFERENCES `accounts`(`account_id`),
+  FOREIGN KEY (`category_id`)
+      REFERENCES `categories`(`category_id`),
+  KEY `KEY` (`transaction_date`, `description`, `amount`, `created_at`)
+);
+
+CREATE TABLE `category_keywords` (
+  `keyword_id` INT AUTO_INCREMENT,
+  `category_id` INT NOT NULL,
+  `keyword` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`keyword_id`),
+  FOREIGN KEY (`category_id`)
+      REFERENCES `categories`(`category_id`),
+  KEY `KEY` (`keyword`)
+);
+
